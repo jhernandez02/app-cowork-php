@@ -1,22 +1,20 @@
 ## Instalación
 
-git clone
+```sh
+git clone https://github.com/jhernandez02/app-cowork-php.git
 cd app-cowork-php
 php artisan migrate
 php artisan db:seed
 php artisan serve
+```
 
 ## Usuarios de Prueba
-Adminstrador:
-Usuario: admin@example.com
-Clave: 123456
 
-Clientes:
-Usuario: cliente@example.com
-Clave: 123456
-
-Usuario: visitante@example.com
-Clave: 123456
+| Rol | Email | Password |
+|------ |------ |------ |
+| Admin | admin@example.com | 123456|
+| Cliente | cliente@example.com |123456|
+| Cliente | visitante@example.com |123456|
 
 ## Tecnologías
 - PHP 8.2
