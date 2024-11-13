@@ -47,27 +47,13 @@ class ReservaRepository implements ReservaRepositoryInterface
     public function isAvailable(int $salaId, string $fecha, string $hora): bool
     {
         
-        $horaInicio = Carbon::createFromFormat('H:i', $hora); // Hora solicitada
-        $horaFin = $horaInicio->copy()->addHour(); // Hora de fin (1 hora después)
+        $horaInicio = Carbon::createFromFormat('H:i', $hora);
 
         return !Reserva::where('sala_id', $salaId)
-            ->where('fecha', $fecha)
-            ->where(function ($query) use ($horaInicio, $horaFin) {
-                $query->where(function($query) use ($horaInicio, $horaFin) {
-                    // Verifica que no haya una reserva que empiece dentro del rango solicitado
-                    $query->whereBetween('hora', [
-                        $horaInicio->format('H:i'),
-                        $horaFin->format('H:i')
-                    ]);
-                })
-                // Permite hacer la reserva si no hay solapamiento de más de 59 minutos
-                ->orWhere(function($query) use ($horaInicio) {
-                    $query->whereRaw("DATE_ADD(hora, INTERVAL 1 HOUR) <= ?", [$horaInicio->format('H:i')]);
-                })
-                ->orWhere(function($query) use ($horaFin) {
-                    $query->whereRaw("hora >= DATE_SUB(?, INTERVAL 59 MINUTE)", [$horaFin->format('H:i')]);
-                });
-            })
-            ->exists();
+        ->where('fecha', $fecha)
+        ->whereBetween('hora', [
+            $horaInicio->copy()->subHour(), 
+            $horaInicio->copy()->addMinutes(59)
+         ])->exists();
     }
 }
