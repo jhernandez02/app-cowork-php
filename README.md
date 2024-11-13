@@ -3,6 +3,7 @@
 ```sh
 git clone https://github.com/jhernandez02/app-cowork-php.git
 cd app-cowork-php
+composer install
 php artisan migrate
 php artisan db:seed
 php artisan serve
