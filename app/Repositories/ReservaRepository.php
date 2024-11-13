@@ -65,7 +65,7 @@ class ReservaRepository implements ReservaRepositoryInterface
                     $query->whereRaw("DATE_ADD(hora, INTERVAL 1 HOUR) <= ?", [$horaInicio->format('H:i')]);
                 })
                 ->orWhere(function($query) use ($horaFin) {
-                    $query->whereRaw("hora >= DATE_ADD(?, INTERVAL 59 MINUTE)", [$horaFin->format('H:i')]);
+                    $query->whereRaw("hora >= DATE_SUB(?, INTERVAL 59 MINUTE)", [$horaFin->format('H:i')]);
                 });
             })
             ->exists();
